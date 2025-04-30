@@ -28,7 +28,7 @@ services:
     ports:
       - "${REDMINE_PORT}:3000"
     networks:
-      -       - redmine-net
+      - redmine-net
 
 networks:
   redmine-net:
