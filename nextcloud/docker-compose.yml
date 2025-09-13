@@ -1,0 +1,41 @@
+services:
+  nextcloud:
+    build: ./nextcloud/
+    image: nextcloud:local
+    container_name: nextcloud
+    restart: always
+    environment:
+      MYSQL_USER: nextcloud # mysqlユーザ
+      MYSQL_PASSWORD: nextcloud123 # mysqlパスワード
+      MYSQL_HOST: mysql # mysqlユーザ
+      MYSQL_DATABASE: nextcloud # mysqlデータベース名
+      PHP_MEMORY_LIMIT: 40960M # メモリ上限
+      PHP_UPLOAD_LIMIT: 40960M # アップロード上限
+    ports:
+      - "8000:80"
+    volumes:
+      - nextcloud_data:/var/www/html
+  mysql:
+    build: ./mysql/
+    image: mysql:8.4local
+    container_name: mysqldb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: matsupy123   # rootユーザのパスワード
+      MYSQL_DATABASE: nextcloud              # 作成したいデータベース名
+      MYSQL_USER: nextcloud              # 作成したいユーザ名
+      MYSQL_PASSWORD: nextcloud123          # 作成したいユーザのパスワード
+#    ports:
+#      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql         # データ永続化用ボリューム
+#    networks:
+#      - matsupy-net
+
+volumes:
+  mysql_data:
+  nextcloud_data:
+
+#networks:
+#  matsupy-net:
+#    external: true
