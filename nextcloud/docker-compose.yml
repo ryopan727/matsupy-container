@@ -5,14 +5,14 @@ services:
     container_name: nextcloud
     restart: always
     environment:
-      MYSQL_USER: nextcloud # mysqlユーザ
-      MYSQL_PASSWORD: nextcloud123 # mysqlパスワード
-      MYSQL_HOST: mysql # mysqlユーザ
-      MYSQL_DATABASE: nextcloud # mysqlデータベース名
-      PHP_MEMORY_LIMIT: 40960M # メモリ上限
-      PHP_UPLOAD_LIMIT: 40960M # アップロード上限
+      MYSQL_USER: ${NEXTCLOUD_DB_USER} # mysqlユーザ
+      MYSQL_PASSWORD: ${NEXTCLOUD_DB_PASSWORD} # mysqlパスワード
+      MYSQL_HOST: ${NEXTCLOUD_DB_HOST} # mysqlホスト
+      MYSQL_DATABASE: ${NEXTCLOUD_DB_NAME} # mysqlデータベース名
+      PHP_MEMORY_LIMIT: ${NEXTCLOUD_PHP_MEMORY_LIMIT} # メモリ上限
+      PHP_UPLOAD_LIMIT: ${NEXTCLOUD_PHP_UPLOAD_LIMIT} # アップロード上限
     ports:
-      - "8000:80"
+      - "${NEXTCLOUD_PORT}:80"
     volumes:
       - nextcloud_data:/var/www/html
   mysql:
@@ -21,10 +21,10 @@ services:
     container_name: mysqldb
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: matsupy123   # rootユーザのパスワード
-      MYSQL_DATABASE: nextcloud              # 作成したいデータベース名
-      MYSQL_USER: nextcloud              # 作成したいユーザ名
-      MYSQL_PASSWORD: nextcloud123          # 作成したいユーザのパスワード
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # rootユーザのパスワード
+      MYSQL_DATABASE: ${NEXTCLOUD_DB_NAME} # 作成したいデータベース名
+      MYSQL_USER: ${NEXTCLOUD_DB_USER} # 作成したいユーザ名
+      MYSQL_PASSWORD: ${NEXTCLOUD_DB_PASSWORD} # 作成したいユーザのパスワード
 #    ports:
 #      - "3306:3306"
     volumes:
